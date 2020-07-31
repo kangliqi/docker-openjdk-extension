@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ rados ]
+  pull_request:
+    branches: [ rados ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: |
+        docker build . --file Dockerfile --tag openjdk:latest
+        docker tag openjdk:latest ifreecomm/openjdk:11-rados
+        docker login -u kangliqi -p ${{ secrets.DOCKERHUB_TOKEN }}
+        docker push ifreecomm/openjdk:11-rados
