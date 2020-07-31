@@ -17,6 +17,13 @@ jobs:
     - name: Build the Docker image
       run: |
         docker build . --file Dockerfile --tag openjdk:latest
+
+        # to dockerhub
         docker tag openjdk:latest ifreecomm/openjdk:11-rados
         docker login -u kangliqi -p ${{ secrets.DOCKERHUB_TOKEN }}
         docker push ifreecomm/openjdk:11-rados
+        
+        # to aliyun
+        docker tag openjdk:latest registry.cn-hangzhou.aliyuncs.com/code4thought/openjdk:11-rados
+        docker login --username=openjdk@1039415177396567 --password=${{ secrets.ALIYUN_ACCESS_KEY }} registry.cn-hangzhou.aliyuncs.com
+        docker push registry.cn-hangzhou.aliyuncs.com/code4thought/openjdk:11-rados
